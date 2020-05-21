@@ -1,4 +1,4 @@
-import { Grid, Typography, makeStyles, Icon, Paper } from '@material-ui/core';
+import { Grid, Typography, makeStyles, Icon, Paper, Button } from '@material-ui/core';
 
 import { BigTitle, Head } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
@@ -21,12 +21,18 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   gridItemWrapper: {
     padding: spacing(3, 1),
     height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   gridItemTitle: {
     margin: spacing(1, 0, 3, 0)
   },
   icon: {
     ...{...typography.h3, fontFamily: undefined },
+  },
+  cta: {
+    margin: [['auto', 0, spacing(1), 0]],
   },
 }), { classNamePrefix: 'Home' });
 
@@ -36,10 +42,12 @@ const useTranslations = makeTranslations('home', {
     play: {
       title: 'Jouez',
       content: 'Découvrez les histoires des autres créateurs.',
+      cta: 'Lire',
     },
     create: {
       title: 'Créez',
       content: 'Écrivez votre propre histoire dont vous êtes le héros.',
+      cta: 'Écrire',
     },
   },
   en: {
@@ -47,10 +55,12 @@ const useTranslations = makeTranslations('home', {
     play: {
       title: 'Play',
       content: 'Discover other creators\' stories.',
+      cta: 'Read',
     },
     create: {
       title: 'Create',
       content: 'Write your own adventure in which you\'re the hero.',
+      cta: 'Write',
     },
   },
 });
@@ -90,6 +100,14 @@ const Home = () => {
                 <Typography variant="body2">
                   { t('create.content') }
                 </Typography>
+                <Button
+                  className={classes.cta}
+                  color="primary"
+                  variant="outlined"
+                  size="large"
+                >
+                  { t('create.cta') }
+                </Button>
               </Paper>
             </Grid>
 
@@ -100,8 +118,16 @@ const Home = () => {
                   { t('play.title') }
                 </Typography>
                 <Typography variant="body2">
-                { t('play.content') }
+                  { t('play.content') }
                 </Typography>
+                <Button
+                  className={classes.cta}
+                  color="primary"
+                  variant="outlined"
+                  size="large"
+                >
+                  { t('play.cta') }
+                </Button>
               </Paper>
             </Grid>
           </Grid>
