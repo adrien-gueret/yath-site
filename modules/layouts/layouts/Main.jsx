@@ -8,13 +8,13 @@ const useStyles = makeStyles(({ palette }) => ({
         background: palette.background.default,
     },
     header: {
-        height: 24,
+        height: 48,
     },
     main: {
         flexGrow: 1,
     },
     footer: {
-        height: 12,
+        height: 24,
     },
 }), { classNamePrefix: 'MainLayout' });
 

@@ -1,9 +1,8 @@
 import { Grid, Typography, makeStyles, Icon, Paper } from '@material-ui/core';
 
-import MainLayout from 'layouts/Main';
-
-import { BigTitle, Head, LayoutContainer } from 'modules/app';
+import { BigTitle, Head } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
+import { MainLayout, LayoutContainer } from 'modules/layouts';
 
 const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   titleContainer: {
@@ -47,7 +46,7 @@ const useTranslations = makeTranslations('home', {
     metaDescription: 'With yath, write and share your own adventures in which you\'re the hero.',
     play: {
       title: 'Play',
-      content: 'Discover for free other creators\' stories.',
+      content: 'Discover other creators\' stories.',
     },
     create: {
       title: 'Create',
