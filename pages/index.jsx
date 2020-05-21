@@ -1,6 +1,6 @@
 import { Grid, Typography, makeStyles, Icon, Paper, Button } from '@material-ui/core';
 
-import { BigTitle, Head } from 'modules/app';
+import { BigTitle, Head, Link } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
 import { MainLayout, LayoutContainer } from 'modules/layouts';
 
@@ -111,11 +111,11 @@ const Home = () => {
                   color="primary"
                   variant="outlined"
                   size="large"
-                  disabled
+                  component={Link}
+                  href="/dashboard"
                 >
                   { t('create.cta') }
-                </Button>
-                <Typography className={classes.soon} variant="caption">{ t('soon') }</Typography>
+                </Button>                
               </Paper>
             </Grid>
 
@@ -148,4 +148,4 @@ const Home = () => {
   );
 }
 
-export default Home
+export default Home;

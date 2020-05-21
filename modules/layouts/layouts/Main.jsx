@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { makeStyles, AppBar, Toolbar, Button, Icon, Menu, MenuItem } from '@material-ui/core';
+import { makeStyles, AppBar, Toolbar } from '@material-ui/core';
 
-import { makeTranslations } from 'modules/i18n';
+import { LocaleSwitcher } from 'modules/i18n';
 
 const useStyles = makeStyles(({ palette }) => ({
     root: {
@@ -21,64 +20,16 @@ const useStyles = makeStyles(({ palette }) => ({
     },
 }), { classNamePrefix: 'MainLayout' });
 
-const useTranslatations = makeTranslations();
-
 export default function MainLayout({ children }) {
-    const [languageMenuAnchorEl, setLanguageMenuAnchorEl] = useState(null);
-    const t = useTranslatations();
-
-    const handleLangugageButtonClick = (event) => {
-        setLanguageMenuAnchorEl(event.currentTarget);
-    };
-
-    const handleLanguageMenuClose = () => {
-        setLanguageMenuAnchorEl(null);
-    };
     const classes = useStyles();
-    const isLanguageMenuOpen = Boolean(languageMenuAnchorEl);
-
-    const localesToLanguages = {
-        fr: 'Français',
-        en: 'English',
-    };
-
-    const getOnChangeLocale = locale => () => {
-        t.setLocale(locale);
-        handleLanguageMenuClose();
-    };
 
     return (
         <div className={classes.root}>
             <AppBar className={classes.header} position="static">
                 <Toolbar>
-                    <Button
-                        aria-controls="language-selector"
-                        aria-haspopup="true"
-                        onClick={handleLangugageButtonClick}
-                        startIcon={<Icon>translate</Icon>}
-                        endIcon={<Icon>{ isLanguageMenuOpen ? 'expand_less' : 'expand_more' }</Icon>}
-                        className={classes.toRight}
-                        color="inherit"
-                    >
-                        { localesToLanguages[t.currentLocale] }
-                    </Button>
-                    <Menu
-                        id="language-selector"
-                        anchorEl={languageMenuAnchorEl}
-                        keepMounted
-                        open={isLanguageMenuOpen}
-                        onClose={handleLanguageMenuClose}
-                    >
-                        { Object.keys(localesToLanguages).map((locale) => (
-                            <MenuItem
-                                key={locale}
-                                selected={locale === t.currentLocale}
-                                onClick={getOnChangeLocale(locale)}
-                            >
-                                { localesToLanguages[locale] }
-                            </MenuItem>
-                        )) }
-                    </Menu>
+                    <span className={classes.toRight}>
+                        <LocaleSwitcher />
+                    </span>
                 </Toolbar>
             </AppBar>
 
