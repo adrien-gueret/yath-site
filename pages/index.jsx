@@ -34,6 +34,10 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   cta: {
     margin: [['auto', 0, spacing(1), 0]],
   },
+  soon: {
+    fontStyle: 'italic',
+    color: palette.text.disabled,
+  },
 }), { classNamePrefix: 'Home' });
 
 const useTranslations = makeTranslations('home', {
@@ -49,6 +53,7 @@ const useTranslations = makeTranslations('home', {
       content: 'Écrivez votre propre histoire dont vous êtes le héros.',
       cta: 'Écrire',
     },
+    soon: 'Bientôt !',
   },
   en: {
     metaDescription: 'With yath, write and share your own adventures in which you\'re the hero.',
@@ -62,6 +67,7 @@ const useTranslations = makeTranslations('home', {
       content: 'Write your own adventure in which you\'re the hero.',
       cta: 'Write',
     },
+    soon: 'Soon!',
   },
 });
 
@@ -105,9 +111,11 @@ const Home = () => {
                   color="primary"
                   variant="outlined"
                   size="large"
+                  disabled
                 >
                   { t('create.cta') }
                 </Button>
+                <Typography className={classes.soon} variant="caption">{ t('soon') }</Typography>
               </Paper>
             </Grid>
 
@@ -122,12 +130,14 @@ const Home = () => {
                 </Typography>
                 <Button
                   className={classes.cta}
+                  disabled
                   color="primary"
                   variant="outlined"
                   size="large"
                 >
                   { t('play.cta') }
                 </Button>
+                <Typography className={classes.soon} variant="caption">{ t('soon') }</Typography>
               </Paper>
             </Grid>
           </Grid>

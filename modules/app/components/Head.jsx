@@ -1,7 +1,7 @@
 import NextHead from 'next/head';
 import { useTheme } from '@material-ui/core';
 
-export default function Head({ title = 'yath - you are the hero', description}) {
+export default function Head({ title = 'yath - you are the hero!', description}) {
     const theme = useTheme();
     
     return (  
