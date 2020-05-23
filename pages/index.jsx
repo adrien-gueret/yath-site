@@ -2,7 +2,7 @@ import { Grid, Typography, makeStyles, Icon, Paper, Button } from '@material-ui/
 
 import { BigTitle, Head, Link } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
-import { MainLayout, LayoutContainer } from 'modules/layouts';
+import { AnonymousLayout, LayoutContainer } from 'modules/layouts';
 
 const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   titleContainer: {
@@ -79,7 +79,7 @@ const Home = () => {
     <>
       <Head description={t('metaDescription')} />
       
-      <MainLayout>
+      <AnonymousLayout>
 
         <LayoutContainer classes={{ root: classes.titleContainer }}>
           <BigTitle>yath</BigTitle>
@@ -115,7 +115,7 @@ const Home = () => {
                   href="/dashboard"
                 >
                   { t('create.cta') }
-                </Button>                
+                </Button>          
               </Paper>
             </Grid>
 
@@ -143,7 +143,7 @@ const Home = () => {
           </Grid>
         </LayoutContainer>
         
-      </MainLayout>
+      </AnonymousLayout>
     </>
   );
 }
