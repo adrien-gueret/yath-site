@@ -4,7 +4,7 @@ import { clientApi } from 'modules/app';
 
 import CurrentUserContext from '../contexts/CurrentUser';
 
-export default function useCurrentUser(forceRefetch = false) {
+export default function useCurrentUser(forceRefetch = false, deps = []) {
     const { state, dispatch } = useContext(CurrentUserContext);
 
     const fetchCurrentUser = useCallback(async () => {
@@ -14,12 +14,17 @@ export default function useCurrentUser(forceRefetch = false) {
 
         try {
             dispatch({ type: 'request' });
+
+            if (!clientApi.accessToken || !clientApi.accessTokenExpiration) {
+                await clientApi.requestToken('client_credentials');
+            }
+
             const { body } = await clientApi.get('/me');
             dispatch({ type: 'request-success', payload: body });
         } catch (e) {
             dispatch({ type: 'request-failure', payload: null });
         }
-    }, [forceRefetch]);
+    }, [forceRefetch, ...deps]);
 
     useEffect(() => {
         fetchCurrentUser();

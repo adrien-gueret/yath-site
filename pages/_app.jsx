@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider, makeStyles } from '@material-ui/core';
 
+import { clientApi } from 'modules/app';
 import theme from 'modules/themes';
-
 import { CurrentLocaleProvider, setCurrentLocale, getUserLocale } from 'modules/i18n';
 import { CurrentUserProvider } from 'modules/users';
 
@@ -21,7 +21,18 @@ if (typeof window !== 'undefined') {
 }
 
 function YathApp({ Component, pageProps, defaultCurrentLocale }) {
+    const [isClientApiReady, setIsClientApiReady] = useState(clientApi.accessToken && clientApi.accessTokenExpiration);
+
+    useEffect(() => {
+        if (isClientApiReady) {
+            return;
+        }
+
+        clientApi.requestToken('client_credentials').then(() => setIsClientApiReady(true));
+    }, [isClientApiReady]);
+
     useStyles();
+
     return (
         <ThemeProvider theme={theme}>
             <CurrentLocaleProvider defaultLocale={defaultCurrentLocale}>
