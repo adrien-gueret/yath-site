@@ -32,7 +32,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
     ...{...typography.h3, fontFamily: undefined },
   },
   cta: {
-    margin: [['auto', 0, spacing(1), 0]],
+    margin: [[spacing(2), 0, spacing(1), 0]],
   },
   soon: {
     fontStyle: 'italic',

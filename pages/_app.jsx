@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import Router from 'next/router';
 
 import { clientApi, SnackMessageProvider } from 'modules/app';
 import theme from 'modules/themes';
@@ -12,6 +13,10 @@ if (typeof window !== 'undefined') {
 
 function YathApp({ Component, pageProps, defaultCurrentLocale }) {
     const [isClientApiReady, setIsClientApiReady] = useState(clientApi.accessToken && clientApi.accessTokenExpiration);
+
+    useEffect(() => {
+        Router.events.on('routeChangeComplete', () => { window.scrollTo(0, 0); });
+    }, []);
 
     useEffect(() => {
         if (isClientApiReady) {
