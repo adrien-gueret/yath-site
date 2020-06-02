@@ -1,6 +1,6 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useCallback } from 'react';
 
-import { Snackbar, Slide } from '@material-ui/core';
+import { Snackbar, Slide, useTheme } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import SnackMessageContext from '../contexts/SnackMessage';
@@ -29,6 +29,7 @@ function SlideTransition(props) {
 
 export default function SnackMessageProvider({ children }) {
     const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
+    const { transitions } = useTheme();
 
     const open = (content, severity) => {
         dispatch({ type: 'open', payload: { content, severity }});
@@ -37,6 +38,15 @@ export default function SnackMessageProvider({ children }) {
     const close = () => {
         dispatch({ type: 'close' });
     };
+
+    const closeAndOpen = useCallback((content, severity) => {
+        if (state.isOpen) {
+            close();
+            window.setTimeout(() => open(content, severity), transitions.duration.leavingScreen);
+        } else {
+            open(content, severity);
+        }
+    }, [state.isOpen]);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -47,7 +57,7 @@ export default function SnackMessageProvider({ children }) {
       };
 
     return (
-        <SnackMessageContext.Provider value={{ open, close }}>
+        <SnackMessageContext.Provider value={{ open: closeAndOpen, close }}>
             { children }
 
             <Snackbar
