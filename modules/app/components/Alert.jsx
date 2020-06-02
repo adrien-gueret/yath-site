@@ -25,10 +25,10 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     cta: {
         margin: spacing(2),
     },
-}), { classNamePrefix: 'NotConnectedAlert' });
+}), { classNamePrefix: 'Alert' });
 
 
-export default function NotConnectedAlert({ children, title, details, severity = 'warning', secondaryAction, primaryAction }) {
+export default function Alert({ children, title, details, severity = 'warning', secondaryAction, primaryAction }) {
     const classes = useStyles({ severity });
     const severityIcons = {
         error: 'error',
