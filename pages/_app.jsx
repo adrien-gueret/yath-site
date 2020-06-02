@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 
-import { clientApi } from 'modules/app';
+import { clientApi, SnackMessageProvider } from 'modules/app';
 import theme from 'modules/themes';
 import { CurrentLocaleProvider, setCurrentLocale, getUserLocale } from 'modules/i18n';
 import { CurrentUserProvider } from 'modules/users';
@@ -26,7 +26,9 @@ function YathApp({ Component, pageProps, defaultCurrentLocale }) {
             <CssBaseline />
             <CurrentLocaleProvider defaultLocale={defaultCurrentLocale}>
                 <CurrentUserProvider>
-                    <Component {...pageProps} />
+                    <SnackMessageProvider>
+                        <Component {...pageProps} />
+                    </SnackMessageProvider>
                 </CurrentUserProvider>
             </CurrentLocaleProvider>
         </ThemeProvider>

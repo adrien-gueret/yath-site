@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import {
     makeStyles, AppBar, Toolbar, Hidden, IconButton, Icon, Drawer,
@@ -8,7 +8,7 @@ import {
 
 import { useMutation } from 'react-query';
 
-import { clientApi } from 'modules/app';
+import { clientApi, useSnackMessage } from 'modules/app';
 import { LocaleSwitcher, makeTranslations } from 'modules/i18n';
 import { useCurrentUser, CurrentUserContext, Avatar } from 'modules/users';
 
@@ -35,9 +35,6 @@ const useStyles = makeStyles(({ palette, spacing, breakpoints, zIndex }) => {
         main: {
             flexGrow: 1,
         },
-        footer: {
-            height: 24,
-        },
         username: {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -53,9 +50,11 @@ const useStyles = makeStyles(({ palette, spacing, breakpoints, zIndex }) => {
 const useTranslations = makeTranslations('dashboardLayout', {
     fr: {
         logout: 'Se déconnecter',
+        logoutSuccess: 'Vous êtes bien déconnecté : au revoir !',
     },
     en: {
         logout: 'Log out',
+        logoutSuccess: 'You are logged out: see you soon!',
     },
 });
 
@@ -65,8 +64,11 @@ export default function DashboardLayout({ children }) {
     const { breakpoints } = useTheme();
     const isDrawerPermanent = useMediaQuery(breakpoints.up('md'));
     const isDrawerHidden = !currentUserState.currentUser || currentUserState.hasError;
+    const [openSnackbar] = useSnackMessage();
 
-    const [isDrawerOpen, setIsDrawerOpen] = React.useState(!isDrawerHidden && isDrawerPermanent);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(!isDrawerHidden && isDrawerPermanent);
+
+    const t = useTranslations();
 
     const handleDrawerToggle = () => {
         setIsDrawerOpen(prevState => !prevState);
@@ -77,10 +79,10 @@ export default function DashboardLayout({ children }) {
             await clientApi.requestToken('client_credentials');
             dispatch({ type: 'logout' });
             clientApi.setOauth2Tokens();
+            openSnackbar(t('logoutSuccess'), 'success');
         },
     });
 
-    const t = useTranslations();
     const classes = useStyles({ isDrawerHidden });
 
     return (
@@ -146,8 +148,6 @@ export default function DashboardLayout({ children }) {
             <main className={classes.main}>
                 { typeof children === 'function' ? children(currentUserState) : children }
             </main>
-
-            <AppBar component="footer" className={classes.footer} position="static" />
         </div>
     );
 }

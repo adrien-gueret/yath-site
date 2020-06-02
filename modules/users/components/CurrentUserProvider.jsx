@@ -2,7 +2,11 @@ import React, { useReducer } from 'react';
 
 import CurrentUserContext from '../contexts/CurrentUser';
 
-function reducer(state, action) {
+const DEFAULT_STATE = {
+    currentUser: null, hasError: false, isLoading: false,
+};
+
+function reducer(state = DEFAULT_STATE, action) {
     switch (action.type) {
         case 'request':
             return { ...state, hasError: false, isLoading: true };
@@ -14,18 +18,14 @@ function reducer(state, action) {
             return { currentUser: action.payload, hasError: false, isLoading: false };
 
         case 'logout': 
-            return { currentUser: null, hasError: false, isLoading: false };
+            return DEFAULT_STATE;
 
         default: return state;
     }
 }
 
 export default function CurrentUserProvider({ children }) {
-    const [state, dispatch] = useReducer(reducer, {
-        currentUser: null,
-        isLoading: false,
-        hasError: false,
-    });
+    const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);
 
     return (
         <CurrentUserContext.Provider value={{ state, dispatch }}>

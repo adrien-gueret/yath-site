@@ -7,7 +7,7 @@ import { Alert } from '@material-ui/lab';
 
 import c from 'classnames';
 
-import { Link, ProcessingButton, clientApi } from 'modules/app';
+import { Link, ProcessingButton, clientApi, useSnackMessage } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
 import { CurrentUserContext } from 'modules/users';
 
@@ -103,6 +103,10 @@ const useTranslations = makeTranslations('loginForm', {
         },
         forgottenPassword: 'Mot de passe oublié ?',
       },
+      snackbar: {
+        registerSuccess: 'Votre compte a bien été créé : bienvenue !',
+        signInSuccess: 'Ravi de vous revoir !', 
+      },
     },
     en: {
       signIn: {
@@ -139,6 +143,10 @@ const useTranslations = makeTranslations('loginForm', {
         },
         forgottenPassword: 'Forgotten password?',
       },
+      snackbar: {
+        registerSuccess: 'Welcome! Your account has been created.',
+        signInSuccess: 'Glad to see you again!', 
+      },
     },
 });
 
@@ -149,6 +157,7 @@ function LoginForm({ isRegistration, classes: customClasses }) {
     const theme = useTheme();
     const forceCollapseIn = useMediaQuery(theme.breakpoints.up('md'));
     const classes = useStyles({ classes: customClasses });
+    const [openSnackbar] = useSnackMessage();
 
     const translationNamespace = isRegistration ? 'register' : 'signIn';
 
@@ -164,6 +173,7 @@ function LoginForm({ isRegistration, classes: customClasses }) {
         return clientApi.requestToken('password', { username: email, password });
     }, {
         onSuccess() {
+            openSnackbar(t(isRegistration ? 'snackbar.registerSuccess' : 'snackbar.signInSuccess'), 'success');
             Router.push('/dashboard');
         },
     });
