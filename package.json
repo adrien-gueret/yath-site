@@ -12,6 +12,7 @@
     "classnames": "^2.2.6",
     "counterpart": "^0.18.6",
     "linkheader-parser": "^0.1.2",
+    "material-color-hash": "^0.1.6",
     "next": "^9.4.0",
     "next-i18next": "^4.4.2",
     "react": "^16.13.0",

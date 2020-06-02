@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useMutation } from 'react-query';
 import Router from 'next/router';
 
@@ -9,6 +9,7 @@ import c from 'classnames';
 
 import { Link, ProcessingButton, clientApi } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
+import { CurrentUserContext } from 'modules/users';
 
 const useStyles = makeStyles(({ breakpoints, palette, spacing, typography }) => ({
     root: {},
@@ -142,6 +143,7 @@ const useTranslations = makeTranslations('loginForm', {
 });
 
 function LoginForm({ isRegistration, classes: customClasses }) {
+    const { dispatch } = useContext(CurrentUserContext);
     const [isExpanded, toggleIsExpanded] = useState(false);
     const t = useTranslations();
     const theme = useTheme();
@@ -158,6 +160,7 @@ function LoginForm({ isRegistration, classes: customClasses }) {
             await clientApi.post('/users', { email, password });
         }
 
+        dispatch({ type: 'request' });
         return clientApi.requestToken('password', { username: email, password });
     }, {
         onSuccess() {

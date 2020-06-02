@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { makeStyles, Icon, Typography, Button } from '@material-ui/core';
+import { makeStyles, Button, CircularProgress } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import { useMutation } from 'react-query';
 
-import { Head, Link, ProcessingButton } from 'modules/app';
+import { Head, ProcessingButton } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
 import { DashboardLayout, LayoutContainer } from 'modules/layouts';
 import { NotConnectedAlert } from 'modules/users';
 
-const useStyles = makeStyles(() => ({
-  
+const useStyles = makeStyles(({ spacing }) => ({
+  progressContainer: {
+    padding: spacing(7),
+    textAlign: 'center',
+  },
 }), { classNamePrefix: 'Dashboard' });
 
 const useTranslations = makeTranslations('dashboard', {
@@ -49,65 +52,73 @@ const Dashboard = () => {
 
   const [resendEmailConfirmation, { status: requestStatus, error: requestError }] = useMutation(async () => {
     return clientApi.post('/me/resendConfirmation');
-}, {
-  onSuccess() {
-    setHasEmailBeenResent(true);
-  },
-});
+  }, {
+    onSuccess() {
+      setHasEmailBeenResent(true);
+    },
+  });
   
   return (
     <>
       <Head title={t('metaTitle')} />
-      
+        
       <DashboardLayout>
-        { (currentUserState) => (
-            (currentUserState.hasError || !currentUserState.currentUser) ? (
-              <> 
-                <LayoutContainer>
-                  <NotConnectedAlert
-                    details={t('create.not_conntected')}
-                    secondaryAction={(
-                      <Button
-                        component="a"
-                        href={process.env.NEXT_PUBLIC_EDITOR_URL}
-                      >
-                        { t('create.cta') }
-                      </Button>
-                    )}
-                  >
-                    { t('notConnectedAdvice' )}
-                  </NotConnectedAlert>
-                </LayoutContainer>
-              </>
-            ) : (
-              <div>
-                { !currentUserState.currentUser.isVerified && (
-                  <Alert
-                    severity="warning"
-                    action={
-                      <ProcessingButton
-                        color="inherit"
-                        size="small"
-                        onClick={resendEmailConfirmation}
-                        isProcessing={requestStatus === 'loading'}
-                        disabled={hasEmailBeenResent}
-                      >
-                         { hasEmailBeenResent ? t('verificationWarning.resent') : t('verificationWarning.cta') }
-                      </ProcessingButton>
-                    }
-                  >
-                    { t('verificationWarning.content') }
-                  </Alert>
-                )}
-
-                <LayoutContainer>
-                  Connected!
-                  { JSON.stringify(currentUserState.currentUser) }    
-                </LayoutContainer>
-              
+        { ({ hasError, isLoading, currentUser }) => {
+          if (hasError || (!isLoading && !currentUser)) {
+            return (
+              <LayoutContainer>
+                <NotConnectedAlert
+                  details={t('create.not_conntected')}
+                  secondaryAction={(
+                    <Button
+                      component="a"
+                      href={process.env.NEXT_PUBLIC_EDITOR_URL}
+                    >
+                      { t('create.cta') }
+                    </Button>
+                  )}
+                >
+                  { t('notConnectedAdvice' )}
+                </NotConnectedAlert>
+              </LayoutContainer>
+            );
+          } else if (isLoading || !currentUser) {
+            return (
+              <div className={classes.progressContainer}>
+                <CircularProgress size={128} thickness={2} />
               </div>
-            )
-        ) }
+            );
+          }
+
+          return (
+            <div>
+              { !currentUser.isVerified && (
+                <Alert
+                  severity="warning"
+                  action={
+                    <ProcessingButton
+                      color="inherit"
+                      size="small"
+                      onClick={resendEmailConfirmation}
+                      isProcessing={requestStatus === 'loading'}
+                      disabled={hasEmailBeenResent}
+                    >
+                        { hasEmailBeenResent ? t('verificationWarning.resent') : t('verificationWarning.cta') }
+                    </ProcessingButton>
+                  }
+                >
+                  { t('verificationWarning.content') }
+                </Alert>
+              )}
+
+              <LayoutContainer>
+                Connected!
+                { JSON.stringify(currentUser) }    
+              </LayoutContainer>
+              
+            </div>
+          );
+        } }
       </DashboardLayout>
     </>
   );
