@@ -15,6 +15,10 @@ function YathApp({ Component, pageProps, defaultCurrentLocale }) {
     const [isClientApiReady, setIsClientApiReady] = useState(clientApi.accessToken && clientApi.accessTokenExpiration);
 
     useEffect(() => {
+        const jssStyles = document.querySelector('#jss-server-side');
+        if (jssStyles) {
+            jssStyles.parentElement.removeChild(jssStyles);
+        }
         Router.events.on('routeChangeComplete', () => { window.scrollTo(0, 0); });
     }, []);
 
