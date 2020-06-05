@@ -1,15 +1,18 @@
 import { makeStyles, Icon, Typography } from '@material-ui/core';
+import c from 'classnames';
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
     root: {
-        color: ({ severity }) => {
-            switch (severity) {
-                case 'error': return palette.error.dark;
-                case 'success': return palette.success.dark;
-                default: return palette.warning.dark;
-            }
-        },
         marginBottom: spacing(4),
+    },
+    isWarning: {
+        color: palette.warning.dark,
+    },
+    isError: {
+        color: palette.error.dark,
+    },
+    isSuccess: {
+        color: palette.success.dark,
     },
     icon: {
       verticalAlign: 'middle',
@@ -29,16 +32,22 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
 
 
 export default function Alert({ children, title, details, severity = 'warning', secondaryAction, primaryAction }) {
-    const classes = useStyles({ severity });
+    const classes = useStyles();
     const severityIcons = {
         error: 'error',
         warning: 'warning',
         success: 'check_circle',
     }
+    
+    const rootClassName = c(classes.root, {
+        [classes.isError]: severity === 'error',
+        [classes.isSuccess]: severity === 'success',
+        [classes.isWarning]: severity === 'warning',
+    });
 
     return (
         <>
-            <div className={classes.root}>
+            <div className={rootClassName}>
                 <Typography className={classes.title} variant="h5">
                     <Icon
                         className={classes.icon}
