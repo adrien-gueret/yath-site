@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ThemeProvider, CssBaseline } from '@material-ui/core';
+import { ThemeProvider, CssBaseline, StylesProvider  } from '@material-ui/core';
 import Router from 'next/router';
 
 import { clientApi, SnackMessageProvider } from 'modules/app';
@@ -31,16 +31,18 @@ function YathApp({ Component, pageProps, defaultCurrentLocale }) {
     }, [isClientApiReady]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <CurrentLocaleProvider defaultLocale={defaultCurrentLocale}>
-                <CurrentUserProvider>
-                    <SnackMessageProvider>
-                        <Component {...pageProps} />
-                    </SnackMessageProvider>
-                </CurrentUserProvider>
-            </CurrentLocaleProvider>
-        </ThemeProvider>
+        <StylesProvider injectFirst>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <CurrentLocaleProvider defaultLocale={defaultCurrentLocale}>
+                    <CurrentUserProvider>
+                        <SnackMessageProvider>
+                            <Component {...pageProps} />
+                        </SnackMessageProvider>
+                    </CurrentUserProvider>
+                </CurrentLocaleProvider>
+            </ThemeProvider>
+        </StylesProvider>
     );
 }
 
