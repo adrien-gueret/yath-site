@@ -265,7 +265,7 @@ function LoginForm({ isRegistration, classes: customClasses }) {
                     )}
                 </div>
 
-                { !isRegistration && (
+                { (!isRegistration && false) && (
                     <Typography variant="caption" className={c(classes.field, classes.forgottenPasswordContainer)}>
                         <Link className={classes.forgottenPassword} href="/forgotten-password">{ t('form.forgottenPassword') }</Link>
                     </Typography>
