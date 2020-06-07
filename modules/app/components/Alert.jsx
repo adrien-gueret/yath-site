@@ -27,6 +27,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     },
     cta: {
         margin: spacing(2),
+        display: 'inline-block',
     },
 }), { classNamePrefix: 'Alert' });
 
@@ -65,21 +66,23 @@ export default function Alert({ children, title, details, severity = 'warning', 
             { (secondaryAction || primaryAction) && (
                 <div className={classes.ctaContainer}>
                     { secondaryAction && (
-                        React.cloneElement(secondaryAction, {
-                            className: classes.cta,
-                            color: 'secondary',
-                            variant: 'outlined',
-                            size: 'large',
-                        })
+                        <div className={classes.cta}>
+                            { React.cloneElement(secondaryAction, {
+                                color: 'secondary',
+                                variant: 'outlined',
+                                size: 'large',
+                            }) }
+                        </div>
                     )}
 
                     { primaryAction && (
-                        React.cloneElement(primaryAction, {
-                            className: classes.cta,
-                            color: 'primary',
-                            variant: 'contained',
-                            size: 'large',
-                        })
+                        <div className={classes.cta}>
+                            { React.cloneElement(primaryAction, {
+                                color: 'primary',
+                                variant: 'contained',
+                                size: 'large',
+                            }) }
+                        </div>
                     )}
                 </div>
             )}
