@@ -104,7 +104,6 @@ const useTranslations = makeTranslations('loginForm', {
         forgottenPassword: 'Mot de passe oublié ?',
       },
       snackbar: {
-        registerSuccess: 'Votre compte a bien été créé : bienvenue !',
         signInSuccess: 'Ravi de vous revoir !', 
       },
     },
@@ -144,7 +143,6 @@ const useTranslations = makeTranslations('loginForm', {
         forgottenPassword: 'Forgotten password?',
       },
       snackbar: {
-        registerSuccess: 'Welcome! Your account has been created.',
         signInSuccess: 'Glad to see you again!', 
       },
     },
@@ -173,8 +171,15 @@ function LoginForm({ isRegistration, classes: customClasses }) {
         return clientApi.requestToken('password', { username: email, password });
     }, {
         onSuccess() {
-            openSnackbar(t(isRegistration ? 'snackbar.registerSuccess' : 'snackbar.signInSuccess'), 'success');
-            Router.push('/dashboard');
+            let redirectRoute = '/dashboard';
+
+            if (isRegistration) {
+              redirectRoute += '?fromRegistration=1';
+            } else {
+              openSnackbar(t('snackbar.signInSuccess'), 'success');
+            }
+
+            Router.push(redirectRoute);
         },
     });
 

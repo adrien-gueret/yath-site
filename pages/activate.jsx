@@ -2,7 +2,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useMutation } from 'react-query';
 import { makeStyles, Button, Typography, CircularProgress } from '@material-ui/core';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 import { Head, Alert, Link, clientApi } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
