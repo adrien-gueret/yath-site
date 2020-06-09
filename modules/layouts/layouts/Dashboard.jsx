@@ -6,7 +6,7 @@ import {
     ListItemText, ListItemAvatar, ListItemIcon, Button,
 } from '@material-ui/core';
 
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
 
 import { clientApi, useSnackMessage, Link } from 'modules/app';
@@ -95,7 +95,7 @@ const useTranslations = makeTranslations('dashboardLayout', {
     },
 });
 
-export default function DashboardLayout({ children, isJustRegistered }) {
+export default function DashboardLayout({ children }) {
     const currentUserState = useCurrentUser(true);
     const { dispatch } = useContext(CurrentUserContext);
     const { breakpoints } = useTheme();
@@ -124,6 +124,9 @@ export default function DashboardLayout({ children, isJustRegistered }) {
     });
 
     const classes = useStyles({ isDrawerHidden });
+    const router = useRouter();
+
+    const isJustRegistered = Boolean(router.query.fromRegistration);
 
     return (
         <div className={classes.root}>

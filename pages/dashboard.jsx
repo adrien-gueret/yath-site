@@ -3,7 +3,6 @@ import { makeStyles, Button, CircularProgress } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
 import { useMutation } from 'react-query';
-import { useRouter } from 'next/router';
 
 import { Head, ProcessingButton } from 'modules/app';
 import { makeTranslations } from 'modules/i18n';
@@ -50,7 +49,6 @@ const Dashboard = () => {
   const t = useTranslations();
   const classes = useStyles();
   const [hasEmailBeenResent, setHasEmailBeenResent] = useState(false);
-  const router = useRouter();
 
   const [resendEmailConfirmation, { status: requestStatus, error: requestError }] = useMutation(async () => {
     return clientApi.post('/me/resendConfirmation');
@@ -59,14 +57,12 @@ const Dashboard = () => {
       setHasEmailBeenResent(true);
     },
   });
-
-  const isJustRegistered = Boolean(router.query.fromRegistration);
   
   return (
     <>
       <Head title={t('metaTitle')} />
         
-      <DashboardLayout isJustRegistered={isJustRegistered}>
+      <DashboardLayout>
         { ({ hasError, isLoading, currentUser }) => {
           if (hasError || (!isLoading && !currentUser)) {
             return (
