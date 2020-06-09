@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { useMutation } from 'react-query';
-import Router from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 import { Typography, makeStyles, Icon, Paper, Button, TextField, Collapse, useMediaQuery, useTheme } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
@@ -104,7 +104,8 @@ const useTranslations = makeTranslations('loginForm', {
         forgottenPassword: 'Mot de passe oublié ?',
       },
       snackbar: {
-        signInSuccess: 'Ravi de vous revoir !', 
+        signInSuccess: 'Ravi de vous revoir !',
+        registerSuccess: 'Votre compte a bien été créé !',
       },
     },
     en: {
@@ -143,7 +144,8 @@ const useTranslations = makeTranslations('loginForm', {
         forgottenPassword: 'Forgotten password?',
       },
       snackbar: {
-        signInSuccess: 'Glad to see you again!', 
+        signInSuccess: 'Glad to see you again!',
+        registerSuccess: 'Your account has been created!',
       },
     },
 });
@@ -156,6 +158,7 @@ function LoginForm({ isRegistration, classes: customClasses }) {
     const forceCollapseIn = useMediaQuery(theme.breakpoints.up('md'));
     const classes = useStyles({ classes: customClasses });
     const [openSnackbar] = useSnackMessage();
+    const router = useRouter();
 
     const translationNamespace = isRegistration ? 'register' : 'signIn';
 
@@ -172,9 +175,22 @@ function LoginForm({ isRegistration, classes: customClasses }) {
     }, {
         onSuccess() {
             let redirectRoute = '/dashboard';
+            
+            const requestedRedirectPathName = router.query.r;
+            const shouldForceRedirect = Boolean(requestedRedirectPathName);
+
+            if (shouldForceRedirect) {
+              redirectRoute =  decodeURIComponent(requestedRedirectPathName);
+            } else {
+              redirectRoute = '/dashboard';
+            }
 
             if (isRegistration) {
               redirectRoute += '?fromRegistration=1';
+
+              if (shouldForceRedirect) {
+                openSnackbar(t('snackbar.registerSuccess'), 'success');
+              }
             } else {
               openSnackbar(t('snackbar.signInSuccess'), 'success');
             }

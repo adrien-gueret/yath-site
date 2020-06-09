@@ -6,9 +6,10 @@ import {
     ListItemText, ListItemAvatar, ListItemIcon, Button,
 } from '@material-ui/core';
 
+import Router from 'next/router';
 import { useMutation } from 'react-query';
 
-import { clientApi, useSnackMessage } from 'modules/app';
+import { clientApi, useSnackMessage, Link } from 'modules/app';
 import { LocaleSwitcher, makeTranslations } from 'modules/i18n';
 import { useCurrentUser, CurrentUserContext, Avatar } from 'modules/users';
 
@@ -102,6 +103,7 @@ export default function DashboardLayout({ children, isJustRegistered }) {
     const isDrawerHidden = !currentUserState.currentUser || currentUserState.hasError;
     const [openSnackbar] = useSnackMessage();
     const [userMenuItem, setUserMenuItem] = useState(null);
+    const [isDialogClosed, setIsDialogClosed] = useState(false);
 
     const [isDrawerOpen, setIsDrawerOpen] = useState(!isDrawerHidden && isDrawerPermanent);
 
@@ -116,6 +118,7 @@ export default function DashboardLayout({ children, isJustRegistered }) {
             await clientApi.requestToken('client_credentials');
             dispatch({ type: 'logout' });
             clientApi.setOauth2Tokens();
+            Router.push('/login');
             openSnackbar(t('logoutSuccess'), 'success');
         },
     });
@@ -163,7 +166,12 @@ export default function DashboardLayout({ children, isJustRegistered }) {
                         <Divider />
 
                         <List>
-                            <ListItem ref={setUserMenuItem}>
+                            <ListItem
+                                button
+                                ref={setUserMenuItem}
+                                component={Link}
+                                href="/account"
+                            >
                                 <ListItemAvatar>
                                     <Avatar alt={currentUserState.currentUser.username} src={currentUserState.currentUser.avatarUrl} />
                                 </ListItemAvatar>
@@ -186,7 +194,7 @@ export default function DashboardLayout({ children, isJustRegistered }) {
                 { typeof children === 'function' ? children(currentUserState) : children }
             </main>
 
-            { (isJustRegistered && !isDrawerHidden) && (
+            { (isJustRegistered && !isDrawerHidden && !isDialogClosed) && (
                 <Overlay
                     holes={isDrawerPermanent ? [userMenuItem] : []}
                     dialogTitle={t('welcomeDialog.title')}
@@ -200,10 +208,15 @@ export default function DashboardLayout({ children, isJustRegistered }) {
                     )}
                     dialogActions={(
                         <>
-                            <Button color="secondary" variant="outlined">
+                            <Button color="secondary" variant="outlined" onClick={() => setIsDialogClosed(true)}>
                                 { t('welcomeDialog.ctaDashboard') }
                             </Button>
-                            <Button color="primary" variant="contained">
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                component={Link}
+                                href="/account"
+                            >
                                 { t('welcomeDialog.ctaEdit') }
                             </Button>
                         </>

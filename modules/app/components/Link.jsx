@@ -2,8 +2,8 @@ import React from 'react';
 import NextLink from 'next/link';
 
 const Link = React.forwardRef(({ className, href, hrefAs, children, ...otherProps }, ref) => (
-  <NextLink href={href} as={hrefAs} ref={ref}>
-    <a className={className} {...otherProps}>
+  <NextLink href={href} as={hrefAs}>
+    <a className={className} {...otherProps} ref={ref}>
       { children }
     </a>
   </NextLink>
