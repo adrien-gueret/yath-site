@@ -74,7 +74,7 @@ const useTranslations = makeTranslations('dashboardLayout', {
             title: 'Bienvenue sur yath !',
             content: 'Votre compte a bien été créé ! Une petite chose avant de continuer...',
             content2: 'Nous utilisons les services de Gravatar pour essayer de retrouver votre avatar habituel : si nous n\'y parvenons pas, un robot de Robohash vous représente à la place.',
-            content3: 'De plus, nous vous avons généré un pseudonyme aléatoire, en espérant qu\'il vous plaise !',
+            content3: 'De plus, nous vous avons généré un pseudonyme aléatoire: <b>%(username)s</b>. Nous espérons qu\'il vous plaise !',
             content4: 'Bien entendu, vous pouvez modifier ces informations depuis votre profil si vous le désirez.',
             ctaEdit: 'Modifier',
             ctaDashboard: 'Plus tard',
@@ -87,7 +87,7 @@ const useTranslations = makeTranslations('dashboardLayout', {
             title: 'Welcome on yath!',
             content: 'Your account has been created! One small thing before going further...',
             content2: 'We use Gravatar services to fetch your usual avatar: if it does not work, a robot from Robohash will be displayed instead.',
-            content3: 'It is also worth to note that a random username has been generated for you. We hope you like it!',
+            content3: 'It is also worth to note that a random username has been generated for you: <b>%(username)s</b>. We hope you like it!',
             content4: 'You can of course edit these data from your user account.',
             ctaEdit: 'Edit',
             ctaDashboard: 'Later',
@@ -205,7 +205,7 @@ export default function DashboardLayout({ children }) {
                         <>
                             <p>{ t('welcomeDialog.content') }</p>
                             <p>{ t('welcomeDialog.content2') }</p>
-                            <p>{ t('welcomeDialog.content3') }</p>
+                            <p dangerouslySetInnerHTML={{ __html: t('welcomeDialog.content3', { username: currentUserState.currentUser.username }) }} />
                             <p>{ t('welcomeDialog.content4') }</p>
                         </>
                     )}

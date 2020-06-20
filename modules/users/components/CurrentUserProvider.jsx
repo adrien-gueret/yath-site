@@ -14,7 +14,7 @@ function reducer(state = DEFAULT_STATE, action) {
         case 'request-failure':
             return { currentUser: null, hasError: true, isLoading: false };
 
-        case 'request-success':
+        case 'set':
             return { currentUser: action.payload, hasError: false, isLoading: false };
 
         case 'logout': 

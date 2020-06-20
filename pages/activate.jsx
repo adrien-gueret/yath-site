@@ -72,7 +72,7 @@ const Activate = () => {
   const { currentUser, hasError: currentUserError } = useCurrentUser();
   const [activateUser, { error: activateError }] = useMutation(async () => {
     const { body } = await clientApi.patch(`/me?code=${router.query.c}`, { email_verified: 1 });
-    dispatch({ type: 'request-success', payload: body });
+    dispatch({ type: 'set', payload: body });
     setIsLoading(false);
     return body;
   });

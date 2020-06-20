@@ -20,7 +20,7 @@ export default function useCurrentUser(forceRefetch = false, deps = []) {
             }
 
             const { body } = await clientApi.get('/me');
-            dispatch({ type: 'request-success', payload: body });
+            dispatch({ type: 'set', payload: body });
         } catch (e) {
             dispatch({ type: 'request-failure', payload: null });
         }
